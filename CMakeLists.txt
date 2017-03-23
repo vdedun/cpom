@@ -4,7 +4,8 @@ project( CPOM VERSION 0.1 LANGUAGES CXX )
 
 # Set pendantic compilation option where supported
 if ( "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR CMAKE_COMPILER_IS_GNUCXX )
-	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -O3" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic" )
+	set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3" )
 endif ()
 
 # Add a target to generate API documentation with Doxygen
@@ -19,6 +20,9 @@ endif ( DOXYGEN_FOUND )
 
 # External header-only dependencies
 include_directories( extern )
+
+# Support Cmake Tools Integration
+include(CMakeToolsHelpers OPTIONAL)
 
 # Library target
 add_library( cpom STATIC src/ClosestPointQuery.cpp )
