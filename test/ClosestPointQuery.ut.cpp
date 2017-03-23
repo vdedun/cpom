@@ -479,7 +479,7 @@ public:
     }
 };
 
-SCENARIO( "Dense plane mesh", "[Mesh]")
+SCENARIO( "Dense plane mesh", "[.Mesh]")
 {
     GIVEN( "A plane mesh with 4 quad faces and a ClosestPointQuery on it" )
     {
