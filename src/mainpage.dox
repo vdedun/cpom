@@ -37,7 +37,7 @@
  *
  * To run timed tests (benchmarks) :
  *
- *     $ ./cpom_ut -d 1 "Scenario: Dense plane mesh"
+ *     $ ./cpom_ut -d 1 "[.MeshBenchmark]"
  *
  *     0.000 s:     Then: The expected position is returned
  *     0.876 s:     When: Evaluating one million times the query with a position far from the plane

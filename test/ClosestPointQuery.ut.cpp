@@ -562,7 +562,61 @@ public:
     }
 };
 
-SCENARIO( "Dense plane mesh", "[.Mesh]")
+
+SCENARIO( "Dense plane mesh", "[Mesh]")
+{
+    GIVEN( "A plane mesh with 4 quad faces and a ClosestPointQuery on it" )
+    {
+        StubDensePlaneMesh<4> stubDensePlaneMesh;
+        const ClosestPointQuery query(stubDensePlaneMesh);
+
+        WHEN( "Evaluating the query with a position far from the plane" )
+        {
+            const Point position( Point(0.75f, 1.0f, 0.0f) );
+            const Point expectedClosestPoint( Point(0.75f, 0.5f, 0.5f) );
+            const Point closestPoint = query(position, infinity);
+            THEN( "The expected position is returned" )
+            {
+                CAPTURE( closestPoint );
+                CAPTURE( position );
+                REQUIRE( closestPoint.equalsTo(expectedClosestPoint) );
+            }
+        }
+    }
+    GIVEN( "A plane mesh with one million quad faces and a ClosestPointQuery on it" )
+    {
+        StubDensePlaneMesh<1000> stubDensePlaneMesh;
+        const ClosestPointQuery query(stubDensePlaneMesh);
+
+        WHEN( "Evaluating the query with a position at the centroid of the plane" )
+        {
+            const Point position( Point(0.5f, 0.5f, 0.5f) );
+            const Point closestPoint = query(position, infinity);
+            THEN( "The same position is returned" )
+            {
+                CAPTURE( closestPoint );
+                CAPTURE( position );
+                REQUIRE( closestPoint.equalsTo(position) );
+            }
+        }
+
+        WHEN( "Evaluating the query with a position far from the plane" )
+        {
+            const Point position( Point(0.75f, 1.0f, 0.0f) );
+            const Point expectedClosestPoint( Point(0.75f, 0.5f, 0.5f) );
+            const Point closestPoint = query(position, infinity);
+
+            THEN( "The expected position is returned" )
+            {
+                CAPTURE( closestPoint );
+                CAPTURE( position );
+                REQUIRE( closestPoint.equalsTo(expectedClosestPoint) );
+            }
+        }
+    }
+}
+
+SCENARIO( "Dense plane mesh with lots of queries", "[.MeshBenchmark]")
 {
     GIVEN( "A plane mesh with 4 quad faces and a ClosestPointQuery on it" )
     {
