@@ -193,6 +193,89 @@ SCENARIO( "Single Triangle Mesh", "[Mesh]" )
             }
         }
 
+        WHEN( "Evaluating the query with a position in region 0" )
+        {
+            constexpr Point position(0.25f, 0.25f, 0.0f);
+            const Point closestPoint = query(position, infinity);
+
+            THEN( "The same position is returned" )
+            {
+                REQUIRE( position.equalsTo(closestPoint) );
+            }
+        }
+
+        WHEN( "Evaluating the query with a position in region 1" )
+        {
+            constexpr Point position(1.0f, 1.0f, 0.0f);
+            constexpr Point expectedResult(0.5f, 0.5f, 0.0f);
+            const Point closestPoint = query(position, infinity);
+
+            THEN( "The returned point is on the expected edge" )
+            {
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            }
+        }
+
+        WHEN( "Evaluating the query with a position in region 3" )
+        {
+            constexpr Point position(-1.0f, 0.5f, 0.0f);
+            constexpr Point expectedResult(0.0f, 0.5f, 0.0f);
+            const Point closestPoint = query(position, infinity);
+
+            THEN( "The returned point is on the expected edge" )
+            {
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            }
+        }
+
+        WHEN( "Evaluating the query with a position in region 5" )
+        {
+            constexpr Point position(0.5f, -1.0f, 0.0f);
+            constexpr Point expectedResult(0.5f, 0.0f, 0.0f);
+            const Point closestPoint = query(position, infinity);
+
+            THEN( "The returned point is on the expected edge" )
+            {
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            }
+        }
+
+        WHEN( "Evaluating the query with a position in region 2" )
+        {
+            constexpr Point position(-0.5f, 2.0f, 0.0f);
+            constexpr Point expectedResult(0.0f, 1.0f, 0.0f);
+            const Point closestPoint = query(position, infinity);
+
+            THEN( "The returned point is on the expected vertex" )
+            {
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            }
+        }
+
+        WHEN( "Evaluating the query with a position in region 4" )
+        {
+            constexpr Point position(-0.5f, -0.5f, 0.0f);
+            constexpr Point expectedResult(0.0f, 0.0f, 0.0f);
+            const Point closestPoint = query(position, infinity);
+
+            THEN( "The returned point is on the expected vertex" )
+            {
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            }
+        }
+
+        WHEN( "Evaluating the query with a position in region 6" )
+        {
+            constexpr Point position(2.0f, -0.5f, 0.0f);
+            constexpr Point expectedResult(1.0f, 0.0f, 0.0f);
+            const Point closestPoint = query(position, infinity);
+
+            THEN( "The returned point is on the expected vertex" )
+            {
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            }
+        }
+
         WHEN( "Evaluating the query with a position behind max distance from the triangle" )
         {
             constexpr Point position(-1000.0f);
