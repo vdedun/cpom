@@ -19,11 +19,11 @@ struct Face
 class Mesh
 {
 public:
-    /// Fill a vector with all vertices in the mesh.
-    virtual void getVertices(std::vector<Point> &vertices) const = 0;
+    /// Return a vector with all vertices in the mesh.
+    virtual std::vector<Point> getVertices() const = 0;
 
-    /// Fill a vector with all faces in the mesh.
-    virtual void getFaces(std::vector<Face> &faces) const = 0;
+    /// Return a vector with all faces in the mesh.
+    virtual std::vector<Face> getFaces() const = 0;
 };
 
 }

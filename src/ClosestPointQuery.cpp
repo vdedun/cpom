@@ -320,9 +320,9 @@ Point ClosestPointQuery::operator() (const Point& queryPoint, float maxDist) con
 }
 
 ClosestPointQuery::Impl::Impl(const Mesh &m)
+: m_vertices(m.getVertices()),
+  m_faces(m.getFaces())
 {
-    m.getVertices(m_vertices);
-    m.getFaces(m_faces);
     if (m_vertices.empty())
     {
         throw std::invalid_argument("Empty mesh");

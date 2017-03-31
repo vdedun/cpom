@@ -18,11 +18,17 @@ SCENARIO( "Invalid meshs", "[Mesh]" )
     {
         class StubEmptyMesh : public Mesh
         {
-            virtual void getVertices(std::vector<Point> &vertices) const
-            { }
+            virtual std::vector<Point> getVertices() const
+            {
+                std::vector<Point> vertices;
+                return vertices;
+            }
 
-            virtual void getFaces(std::vector<Face> &faces) const
-            { }
+            virtual std::vector<Face> getFaces() const
+            {
+                std::vector<Face> faces;
+                return faces;
+            }
         };
         StubEmptyMesh stubEmptyMesh;
 
@@ -40,27 +46,17 @@ SCENARIO( "Invalid meshs", "[Mesh]" )
         class StubSoloQuadMesh : public Mesh
         {
         public:
-            virtual void getVertices(std::vector<Point> &vertices) const
+            virtual std::vector<Point> getVertices() const
             {
-                static const std::vector<Point> s_vertices = { Point(1.0f),
-                                                               Point(2.0f),
-                                                               Point(3.0f),
-                                                               Point(4.0f) };
-                vertices.reserve(4);
-                std::copy(s_vertices.begin(),
-                          s_vertices.end(),
-                          std::back_inserter(vertices));
+               return { Point(1.0f),
+                        Point(2.0f),
+                        Point(3.0f),
+                        Point(4.0f) };
             }
 
-            virtual void getFaces(std::vector<Face> &faces) const
+            virtual std::vector<Face> getFaces() const
             {
-                static const Face face = { { 0, 1, 2, 3}  };
-                static const std::vector<Face> s_faces = { face };
-
-                faces.reserve(1);
-                std::copy(s_faces.begin(),
-                          s_faces.end(),
-                          std::back_inserter(faces));
+                return { { { 0, 1, 2, 3} } };
             }
         };
 
@@ -83,28 +79,18 @@ SCENARIO( "Invalid meshs", "[Mesh]" )
         class StubSoloPentagonMesh : public Mesh
         {
         public:
-            virtual void getVertices(std::vector<Point> &vertices) const
+            virtual std::vector<Point> getVertices() const
             {
-                static const std::vector<Point> s_vertices = { Point(0.0f, 0.0f, 0.0f),
-                                                               Point(1.0f, 0.0f, 0.0f),
-                                                               Point(1.0f, 1.0f, 0.0f),
-                                                               Point(0.0f, 1.0f, 0.0f),
-                                                               Point(0.0f, 0.5f, 0.0f) };
-                vertices.reserve(5);
-                std::copy(s_vertices.begin(),
-                          s_vertices.end(),
-                          std::back_inserter(vertices));
+                return { Point(0.0f, 0.0f, 0.0f),
+                         Point(1.0f, 0.0f, 0.0f),
+                         Point(1.0f, 1.0f, 0.0f),
+                         Point(0.0f, 1.0f, 0.0f),
+                         Point(0.0f, 0.5f, 0.0f) };
             }
 
-            virtual void getFaces(std::vector<Face> &faces) const
+            virtual std::vector<Face> getFaces() const
             {
-                static const Face face = { { 0, 1, 2, 3, 4}  };
-                static const std::vector<Face> s_faces = { face };
-
-                faces.reserve(1);
-                std::copy(s_faces.begin(),
-                          s_faces.end(),
-                          std::back_inserter(faces));
+                return { { { 0, 1, 2, 3, 4 } } };
             }
         };
 
@@ -129,27 +115,16 @@ SCENARIO( "Single Triangle Mesh", "[Mesh]" )
     class StubSoloTriangleMesh : public Mesh
     {
     public:
-        virtual void getVertices(std::vector<Point> &vertices) const
+        virtual std::vector<Point> getVertices() const
         {
-            static const std::vector<Point> s_vertices = { Point(0.0f, 0.0f, 0.0f),
-                                                           Point(1.0f, 0.0f, 0.0f),
-                                                           Point(0.0f, 1.0f, 0.0f) };
-
-            vertices.reserve(3);
-            std::copy(s_vertices.begin(),
-                      s_vertices.end(),
-                      std::back_inserter(vertices));
+            return { Point(0.0f, 0.0f, 0.0f),
+                     Point(1.0f, 0.0f, 0.0f),
+                     Point(0.0f, 1.0f, 0.0f) };
         }
 
-        virtual void getFaces(std::vector<Face> &faces) const
+        virtual std::vector<Face> getFaces() const
         {
-            static const Face face = { { 0, 1, 2 }  };
-            static const std::vector<Face> s_faces = { face };
-
-            faces.reserve(1);
-            std::copy(s_faces.begin(),
-                      s_faces.end(),
-                      std::back_inserter(faces));
+            return { { { 0, 1, 2 } } };
         }
     };
 
@@ -332,28 +307,17 @@ SCENARIO( "Single Quadrilateral Mesh", "[Mesh]" )
         class StubSoloQuadMesh : public Mesh
         {
         public:
-            virtual void getVertices(std::vector<Point> &vertices) const
+            virtual std::vector<Point> getVertices() const
             {
-                static const std::vector<Point> s_vertices = { Point(0.0f, 0.0f, 0.0f),
-                                                               Point(1.0f, 0.0f, 0.0f),
-                                                               Point(1.0f, 1.0f, 0.0f),
-                                                               Point(0.0f, 1.0f, 0.0f) };
-
-                vertices.reserve(4);
-                std::copy(s_vertices.begin(),
-                          s_vertices.end(),
-                          std::back_inserter(vertices));
+                return { Point(0.0f, 0.0f, 0.0f),
+                         Point(1.0f, 0.0f, 0.0f),
+                         Point(1.0f, 1.0f, 0.0f),
+                         Point(0.0f, 1.0f, 0.0f) };
             }
 
-            virtual void getFaces(std::vector<Face> &faces) const
+            virtual std::vector<Face> getFaces() const
             {
-                static const Face face = { { 0, 1, 2, 3}  };
-                static const std::vector<Face> s_faces = { face };
-
-                faces.reserve(1);
-                std::copy(s_faces.begin(),
-                          s_faces.end(),
-                          std::back_inserter(faces));
+                return { { { 0, 1, 2, 3 } } };
             }
         };
 
@@ -388,28 +352,17 @@ SCENARIO( "Dual Adjacent Triangle Mesh", "[Mesh]")
     class StubDualTriangleMesh : public Mesh
     {
     public:
-        virtual void getVertices(std::vector<Point> &vertices) const
+        virtual std::vector<Point> getVertices() const
         {
-            static const std::vector<Point> s_vertices = { Point(0.0f, 0.0f, 0.0f),
-                                                           Point(1.0f, 0.0f, 0.0f),
-                                                           Point(0.0f, 1.0f, 0.0f),
-                                                           Point(0.5f, 0.5f, 1.0f) };
-            vertices.reserve(4);
-            std::copy(s_vertices.begin(),
-                      s_vertices.end(),
-                      std::back_inserter(vertices));
+            return { Point(0.0f, 0.0f, 0.0f),
+                     Point(1.0f, 0.0f, 0.0f),
+                     Point(0.0f, 1.0f, 0.0f),
+                     Point(0.5f, 0.5f, 1.0f) };
         }
 
-        virtual void getFaces(std::vector<Face> &faces) const
+        virtual std::vector<Face> getFaces() const
         {
-            static const Face face1 = { { 0, 1, 2}  };
-            static const Face face2 = { { 1, 3, 2}  };
-            static const std::vector<Face> s_faces = { face1, face2 };
-
-            faces.reserve(2);
-            std::copy(s_faces.begin(),
-                      s_faces.end(),
-                      std::back_inserter(faces));
+            return { { { 0, 1, 2 } }, { { 1, 3, 2 } } };
         }
     };
 
@@ -454,30 +407,19 @@ SCENARIO( "Dual Apart Triangle Mesh", "[Mesh]")
     class StubDualTriangleMesh : public Mesh
     {
     public:
-        virtual void getVertices(std::vector<Point> &vertices) const
+        virtual std::vector<Point> getVertices() const
         {
-            static const std::vector<Point> s_vertices = { Point(0.0f, 0.0f, -1.0f),
-                                                           Point(1.0f, 0.0f, -1.0f),
-                                                           Point(0.0f, 1.0f, -1.0f),
-                                                           Point(0.0f, 0.0f, +1.0f),
-                                                           Point(1.0f, 0.0f, +1.0f),
-                                                           Point(0.0f, 1.0f, +1.0f) };
-            vertices.reserve(6);
-            std::copy(s_vertices.begin(),
-                      s_vertices.end(),
-                      std::back_inserter(vertices));
+            return { Point(0.0f, 0.0f, -1.0f),
+                     Point(1.0f, 0.0f, -1.0f),
+                     Point(0.0f, 1.0f, -1.0f),
+                     Point(0.0f, 0.0f, +1.0f),
+                     Point(1.0f, 0.0f, +1.0f),
+                     Point(0.0f, 1.0f, +1.0f) };
         }
 
-        virtual void getFaces(std::vector<Face> &faces) const
+        virtual std::vector<Face> getFaces() const
         {
-            static const Face face1 = { { 0, 1, 2}  };
-            static const Face face2 = { { 3, 4, 5}  };
-            static const std::vector<Face> s_faces = { face1, face2 };
-
-            faces.reserve(2);
-            std::copy(s_faces.begin(),
-                      s_faces.end(),
-                      std::back_inserter(faces));
+            return { { { 0, 1, 2} }, { { 3, 4, 5} } };
         }
     };
 
@@ -526,9 +468,9 @@ public:
         return x + y * (R+1);
     }
 
-    virtual void getVertices(std::vector<Point> &vertices) const
+    virtual std::vector<Point> getVertices() const
     {
-        vertices.resize( (R+1) * (R+1) );
+        std::vector<Point> vertices( (R+1) * (R+1) );
         for (int y = 0; y <= R; ++y)
         {
             for (int x = 0; x <= R; ++x)
@@ -538,16 +480,17 @@ public:
                 vertices[vertexIndex(x, y)] = vertex;
             }
         }
+        return vertices;
     }
 
-    size_t faceIndex(int x, int y) const
+    constexpr size_t faceIndex(int x, int y) const
     {
         return x + y*R;
     }
 
-    virtual void getFaces(std::vector<Face> &faces) const
+    virtual std::vector<Face> getFaces() const
     {
-        faces.resize( R * R );
+        std::vector<Face> faces( R * R );
         for (int y = 0; y < R; ++y)
         {
             for (int x = 0; x < R; ++x)
@@ -559,6 +502,7 @@ public:
                 faces[faceIndex(x,y)] = {{ v0, v1, v2, v3}};
             }
         }
+        return faces;
     }
 };
 
