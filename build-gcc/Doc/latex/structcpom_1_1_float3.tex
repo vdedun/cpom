@@ -1,0 +1,95 @@
+\hypertarget{structcpom_1_1_float3}{}\section{cpom\+:\+:Float3 Struct Reference}
+\label{structcpom_1_1_float3}\index{cpom\+::\+Float3@{cpom\+::\+Float3}}
+
+
+Type holding a three dimensional coordinate and associated basic operators.  
+
+
+
+
+{\ttfamily \#include $<$Float3.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+constexpr \hyperlink{structcpom_1_1_float3_a1f26ece02fd3877dcf565b278cc7c5b3}{Float3} (float n=0.\+0f)\hypertarget{structcpom_1_1_float3_a1f26ece02fd3877dcf565b278cc7c5b3}{}\label{structcpom_1_1_float3_a1f26ece02fd3877dcf565b278cc7c5b3}
+
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{structcpom_1_1_float3}{Float3} with x=y=z=n. \end{DoxyCompactList}\item 
+constexpr \hyperlink{structcpom_1_1_float3_a2e9b6a4018537e8ea949383a4014bca8}{Float3} (float x, float y, float z)\hypertarget{structcpom_1_1_float3_a2e9b6a4018537e8ea949383a4014bca8}{}\label{structcpom_1_1_float3_a2e9b6a4018537e8ea949383a4014bca8}
+
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{structcpom_1_1_float3}{Float3} by setting each x,y,z component. \end{DoxyCompactList}\item 
+constexpr \hyperlink{structcpom_1_1_float3_a301415f51723ddb14d357fe967420708}{Float3} (float f\mbox{[}3\mbox{]})\hypertarget{structcpom_1_1_float3_a301415f51723ddb14d357fe967420708}{}\label{structcpom_1_1_float3_a301415f51723ddb14d357fe967420708}
+
+\begin{DoxyCompactList}\small\item\em Construct a \hyperlink{structcpom_1_1_float3}{Float3} from a float\mbox{[}3\mbox{]}. \end{DoxyCompactList}\item 
+bool \hyperlink{structcpom_1_1_float3_ab6843f9fe9197413ecc3da03f9835de3}{equals\+To} (const \hyperlink{structcpom_1_1_float3}{Float3} \&rhs, const float epsilon=std\+::numeric\+\_\+limits$<$ float $>$\+::epsilon()) const \hypertarget{structcpom_1_1_float3_ab6843f9fe9197413ecc3da03f9835de3}{}\label{structcpom_1_1_float3_ab6843f9fe9197413ecc3da03f9835de3}
+
+\begin{DoxyCompactList}\small\item\em Fuzzy component-\/wise comparison to another \hyperlink{structcpom_1_1_float3}{Float3} with tolerance epsilon. \end{DoxyCompactList}\item 
+constexpr bool \hyperlink{structcpom_1_1_float3_ab05cd7600744c7e534ca5f30538bad11}{operator==} (const \hyperlink{structcpom_1_1_float3}{Float3} \&rhs) const \hypertarget{structcpom_1_1_float3_ab05cd7600744c7e534ca5f30538bad11}{}\label{structcpom_1_1_float3_ab05cd7600744c7e534ca5f30538bad11}
+
+\begin{DoxyCompactList}\small\item\em Component-\/wise equality operator. \end{DoxyCompactList}\item 
+constexpr bool \hyperlink{structcpom_1_1_float3_a5dcbfcfc4aca86ebae72f6e45da22e80}{operator!=} (const \hyperlink{structcpom_1_1_float3}{Float3} \&rhs) const \hypertarget{structcpom_1_1_float3_a5dcbfcfc4aca86ebae72f6e45da22e80}{}\label{structcpom_1_1_float3_a5dcbfcfc4aca86ebae72f6e45da22e80}
+
+\begin{DoxyCompactList}\small\item\em Component-\/wise inequality operator. \end{DoxyCompactList}\item 
+constexpr \hyperlink{structcpom_1_1_float3}{Float3} \hyperlink{structcpom_1_1_float3_aadb3df13cdc0a00fb83eee0c57a86b17}{operator+} (const \hyperlink{structcpom_1_1_float3}{Float3} \&rhs) const \hypertarget{structcpom_1_1_float3_aadb3df13cdc0a00fb83eee0c57a86b17}{}\label{structcpom_1_1_float3_aadb3df13cdc0a00fb83eee0c57a86b17}
+
+\begin{DoxyCompactList}\small\item\em Component-\/wise addition operator. \end{DoxyCompactList}\item 
+constexpr \hyperlink{structcpom_1_1_float3}{Float3} \hyperlink{structcpom_1_1_float3_a3052dd6ffffbc349b2b57a11ebcbc8b3}{operator+} (const float rhs) const \hypertarget{structcpom_1_1_float3_a3052dd6ffffbc349b2b57a11ebcbc8b3}{}\label{structcpom_1_1_float3_a3052dd6ffffbc349b2b57a11ebcbc8b3}
+
+\begin{DoxyCompactList}\small\item\em Component-\/wise addition operator with a scalar. \end{DoxyCompactList}\item 
+constexpr \hyperlink{structcpom_1_1_float3}{Float3} \hyperlink{structcpom_1_1_float3_a1d1d544ab644716ddd6a33c6097a004a}{operator-\/} (const \hyperlink{structcpom_1_1_float3}{Float3} \&rhs) const \hypertarget{structcpom_1_1_float3_a1d1d544ab644716ddd6a33c6097a004a}{}\label{structcpom_1_1_float3_a1d1d544ab644716ddd6a33c6097a004a}
+
+\begin{DoxyCompactList}\small\item\em Component-\/wise subtraction operator. \end{DoxyCompactList}\item 
+constexpr \hyperlink{structcpom_1_1_float3}{Float3} \hyperlink{structcpom_1_1_float3_ad330148418ff4237ef51171a6577ce75}{operator-\/} (const float rhs) const \hypertarget{structcpom_1_1_float3_ad330148418ff4237ef51171a6577ce75}{}\label{structcpom_1_1_float3_ad330148418ff4237ef51171a6577ce75}
+
+\begin{DoxyCompactList}\small\item\em Component-\/wise subtraction operator with a scalar. \end{DoxyCompactList}\item 
+constexpr \hyperlink{structcpom_1_1_float3}{Float3} \hyperlink{structcpom_1_1_float3_a095ed6ad7ffefe30b271c8f4972d4f49}{operator$\ast$} (const \hyperlink{structcpom_1_1_float3}{Float3} \&rhs) const \hypertarget{structcpom_1_1_float3_a095ed6ad7ffefe30b271c8f4972d4f49}{}\label{structcpom_1_1_float3_a095ed6ad7ffefe30b271c8f4972d4f49}
+
+\begin{DoxyCompactList}\small\item\em Component-\/wise multiplication operator. \end{DoxyCompactList}\item 
+constexpr \hyperlink{structcpom_1_1_float3}{Float3} \hyperlink{structcpom_1_1_float3_a77cfd5607a0b2c2150058c783ae868b3}{operator$\ast$} (const float rhs) const \hypertarget{structcpom_1_1_float3_a77cfd5607a0b2c2150058c783ae868b3}{}\label{structcpom_1_1_float3_a77cfd5607a0b2c2150058c783ae868b3}
+
+\begin{DoxyCompactList}\small\item\em Component-\/wise multiplication operator with a scalar. \end{DoxyCompactList}\item 
+constexpr \hyperlink{structcpom_1_1_float3}{Float3} \hyperlink{structcpom_1_1_float3_a8ac0f5a686d5a16fb4a081782434c8be}{operator/} (const \hyperlink{structcpom_1_1_float3}{Float3} \&rhs) const \hypertarget{structcpom_1_1_float3_a8ac0f5a686d5a16fb4a081782434c8be}{}\label{structcpom_1_1_float3_a8ac0f5a686d5a16fb4a081782434c8be}
+
+\begin{DoxyCompactList}\small\item\em Component-\/wise division operator. \end{DoxyCompactList}\item 
+constexpr \hyperlink{structcpom_1_1_float3}{Float3} \hyperlink{structcpom_1_1_float3_a1d45c35d64994c877c252991f7456ca3}{operator/} (const float rhs) const \hypertarget{structcpom_1_1_float3_a1d45c35d64994c877c252991f7456ca3}{}\label{structcpom_1_1_float3_a1d45c35d64994c877c252991f7456ca3}
+
+\begin{DoxyCompactList}\small\item\em Component-\/wise division operator with a scalar. \end{DoxyCompactList}\item 
+constexpr float \hyperlink{structcpom_1_1_float3_a88ab6cfbb163b379ee9cf610affc0a10}{dot} (const \hyperlink{structcpom_1_1_float3}{Float3} \&rhs) const \hypertarget{structcpom_1_1_float3_a88ab6cfbb163b379ee9cf610affc0a10}{}\label{structcpom_1_1_float3_a88ab6cfbb163b379ee9cf610affc0a10}
+
+\begin{DoxyCompactList}\small\item\em Dot product with another \hyperlink{structcpom_1_1_float3}{Float3}. \end{DoxyCompactList}\item 
+\hyperlink{structcpom_1_1_float3}{Float3} \hyperlink{structcpom_1_1_float3_ac45b12d3096b1cb12aec1fb431a48eca}{abs} () const \hypertarget{structcpom_1_1_float3_ac45b12d3096b1cb12aec1fb431a48eca}{}\label{structcpom_1_1_float3_ac45b12d3096b1cb12aec1fb431a48eca}
+
+\begin{DoxyCompactList}\small\item\em Return a \hyperlink{structcpom_1_1_float3}{Float3} with the absolute value of components. \end{DoxyCompactList}\item 
+float \hyperlink{structcpom_1_1_float3_a972b777795826ce5c44b5ce5dd87ed62}{sqr\+Length} () const \hypertarget{structcpom_1_1_float3_a972b777795826ce5c44b5ce5dd87ed62}{}\label{structcpom_1_1_float3_a972b777795826ce5c44b5ce5dd87ed62}
+
+\begin{DoxyCompactList}\small\item\em Square of length of vector x,y,z. \end{DoxyCompactList}\item 
+float \hyperlink{structcpom_1_1_float3_a2bf55c619a8050c0b0c7af6d53e08092}{length} () const \hypertarget{structcpom_1_1_float3_a2bf55c619a8050c0b0c7af6d53e08092}{}\label{structcpom_1_1_float3_a2bf55c619a8050c0b0c7af6d53e08092}
+
+\begin{DoxyCompactList}\small\item\em Length of vector x,y,z. \end{DoxyCompactList}\item 
+bool \hyperlink{structcpom_1_1_float3_a6d1df69dd120f1410c654185a06e58d1}{has\+Nan} () const \hypertarget{structcpom_1_1_float3_a6d1df69dd120f1410c654185a06e58d1}{}\label{structcpom_1_1_float3_a6d1df69dd120f1410c654185a06e58d1}
+
+\begin{DoxyCompactList}\small\item\em Returns true if any of x,y,z is NaN. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float {\bfseries x}\hypertarget{structcpom_1_1_float3_a3a9570a39ae1444aec8b02a58419caa1}{}\label{structcpom_1_1_float3_a3a9570a39ae1444aec8b02a58419caa1}
+
+\item 
+float {\bfseries y}\hypertarget{structcpom_1_1_float3_acc6c4c5f8badf56a232fe3de4448197e}{}\label{structcpom_1_1_float3_acc6c4c5f8badf56a232fe3de4448197e}
+
+\item 
+float {\bfseries z}\hypertarget{structcpom_1_1_float3_ab83aefb317f7c526866a2ba87c961d90}{}\label{structcpom_1_1_float3_ab83aefb317f7c526866a2ba87c961d90}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Type holding a three dimensional coordinate and associated basic operators. 
+
+Definition at line 12 of file Float3.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/vincent/dev/cpom/include/Float3.\+h\end{DoxyCompactItemize}

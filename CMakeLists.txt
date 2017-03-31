@@ -2,7 +2,7 @@ cmake_minimum_required( VERSION 3.0 FATAL_ERROR )
 
 project( CPOM VERSION 0.1 LANGUAGES CXX )
 
-# Set pendantic compilation option where supported
+# Set compilation option where supported
 if ( "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" OR CMAKE_COMPILER_IS_GNUCXX )
 	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic" )
 	set( CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3" )

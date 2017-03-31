@@ -1,0 +1,3 @@
+library;cpom;/home/vincent/dev/cpom/build/libcpom.a
+system;Linux;x86_64;Clang
+executable;cpom_ut;/home/vincent/dev/cpom/build/cpom_ut

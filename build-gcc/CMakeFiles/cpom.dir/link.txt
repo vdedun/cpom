@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcpom.a  CMakeFiles/cpom.dir/src/ClosestPointQuery.cpp.o
+/usr/bin/ranlib libcpom.a

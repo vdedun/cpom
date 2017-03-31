@@ -1,7 +1,9 @@
 #ifndef __CLOSESTPOINTQUERY_H__
 #define __CLOSESTPOINTQUERY_H__
 
-#include "Mesh.h"
+#include <Mesh.h>
+
+#include <memory>
 
 namespace cpom
 {
@@ -40,14 +42,8 @@ public:
     Point operator() (const Point &queryPoint, float maxDist) const;
 
 private:
-    void partitionSpace();
-    Point processPartitionedSpace(const Point&, float) const;
-    Point processMesh(const Point&, float) const;
-
-    std::vector<Point> m_vertices;
-    std::vector<Face> m_faces;
-
-    void *m_partitionedSpace;
+    struct Impl;
+    std::unique_ptr<Impl> m_impl;
 };
 
 } // namespace cpom

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="(empty)"
+	BuildStamp="20170323-1910-Experimental"
+	Name="(empty)"
+	Generator="ctest-3.5.1"
+	CompilerName=""
+	CompilerVersion=""
+	OSName="Linux"
+	Hostname="localhost"
+	OSRelease="3.10.18"
+	OSVersion="#1 SMP Sat Mar 18 09:17:17 PDT 2017"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="55"
+	ProcessorCacheSize="1024"
+	NumberOfLogicalCPU="2"
+	NumberOfPhysicalCPU="1"
+	TotalVirtualMemory="5667"
+	TotalPhysicalMemory="3869"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="2593.54"
+	>
+	<Testing>
+		<StartDateTime>Mar 23 19:10 GMT</StartDateTime>
+		<StartTestTime>1490296229</StartTestTime>
+		<TestList>
+			<Test>./cpom_test</Test>
+		</TestList>
+		<Test Status="passed">
+			<Name>cpom_test</Name>
+			<Path>.</Path>
+			<FullName>./cpom_test</FullName>
+			<FullCommandLine>/home/vincent/dev/cpom/build/cpom_ut</FullCommandLine>
+			<Results>
+				<NamedMeasurement type="numeric/double" name="Execution Time">
+					<Value>0.00749683</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Completion Status">
+					<Value>Completed</Value>
+				</NamedMeasurement>
+				<NamedMeasurement type="text/string" name="Command Line">
+					<Value>/home/vincent/dev/cpom/build/cpom_ut</Value>
+				</NamedMeasurement>
+				<Measurement>
+					<Value>===============================================================================
+All tests passed (29 assertions in 6 test cases)
+
+</Value>
+				</Measurement>
+			</Results>
+		</Test>
+		<EndDateTime>Mar 23 19:10 GMT</EndDateTime>
+		<EndTestTime>1490296229</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

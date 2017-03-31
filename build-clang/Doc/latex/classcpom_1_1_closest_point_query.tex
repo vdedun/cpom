@@ -1,0 +1,107 @@
+\hypertarget{classcpom_1_1_closest_point_query}{}\section{cpom\+:\+:Closest\+Point\+Query Class Reference}
+\label{classcpom_1_1_closest_point_query}\index{cpom\+::\+Closest\+Point\+Query@{cpom\+::\+Closest\+Point\+Query}}
+
+
+Functor object that efficiently compute the points closest to the associated mesh.  
+
+
+
+
+{\ttfamily \#include $<$Closest\+Point\+Query.\+h$>$}
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcpom_1_1_closest_point_query_1_1_impl}{Impl}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcpom_1_1_closest_point_query_ae001e975e845aea88228e33baec51ad9}{Closest\+Point\+Query} (const \hyperlink{classcpom_1_1_mesh}{Mesh} \&m)
+\begin{DoxyCompactList}\small\item\em Construct the functor for a given mesh. \end{DoxyCompactList}\item 
+\hyperlink{structcpom_1_1_float3}{Point} \hyperlink{classcpom_1_1_closest_point_query_a3e5c47f7c9161f3a8448800bb7ad5e2c}{operator()} (const \hyperlink{structcpom_1_1_float3}{Point} \&query\+Point, float max\+Dist) const 
+\begin{DoxyCompactList}\small\item\em Return the closest point on the mesh within the specified maximum search distance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Functor object that efficiently compute the points closest to the associated mesh. 
+
+An octree structure is used to partition space and accelerate the nearest face search. 
+
+Definition at line 14 of file Closest\+Point\+Query.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{cpom\+::\+Closest\+Point\+Query@{cpom\+::\+Closest\+Point\+Query}!Closest\+Point\+Query@{Closest\+Point\+Query}}
+\index{Closest\+Point\+Query@{Closest\+Point\+Query}!cpom\+::\+Closest\+Point\+Query@{cpom\+::\+Closest\+Point\+Query}}
+\subsubsection[{\texorpdfstring{Closest\+Point\+Query(const Mesh \&m)}{ClosestPointQuery(const Mesh &m)}}]{\setlength{\rightskip}{0pt plus 5cm}cpom\+::\+Closest\+Point\+Query\+::\+Closest\+Point\+Query (
+\begin{DoxyParamCaption}
+\item[{const {\bf Mesh} \&}]{m}
+\end{DoxyParamCaption}
+)}\hypertarget{classcpom_1_1_closest_point_query_ae001e975e845aea88228e33baec51ad9}{}\label{classcpom_1_1_closest_point_query_ae001e975e845aea88228e33baec51ad9}
+
+
+Construct the functor for a given mesh. 
+
+\begin{DoxyPrecond}{Precondition}
+The mesh is expected to contain only triangle and quadrilateral faces. 
+
+None of the faces should have 3 or more collinear vertices. 
+
+The mesh is expected to contain at least one face.
+\end{DoxyPrecond}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em m} & \hyperlink{classcpom_1_1_mesh}{Mesh} where to find closest points.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondition}
+No reference to the \hyperlink{classcpom_1_1_mesh}{Mesh} m is maintened. 
+\end{DoxyPostcond}
+
+
+Definition at line 309 of file Closest\+Point\+Query.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{cpom\+::\+Closest\+Point\+Query@{cpom\+::\+Closest\+Point\+Query}!operator()@{operator()}}
+\index{operator()@{operator()}!cpom\+::\+Closest\+Point\+Query@{cpom\+::\+Closest\+Point\+Query}}
+\subsubsection[{\texorpdfstring{operator()(const Point \&query\+Point, float max\+Dist) const }{operator()(const Point &queryPoint, float maxDist) const }}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Point} cpom\+::\+Closest\+Point\+Query\+::operator() (
+\begin{DoxyParamCaption}
+\item[{const {\bf Point} \&}]{query\+Point, }
+\item[{float}]{max\+Dist}
+\end{DoxyParamCaption}
+) const}\hypertarget{classcpom_1_1_closest_point_query_a3e5c47f7c9161f3a8448800bb7ad5e2c}{}\label{classcpom_1_1_closest_point_query_a3e5c47f7c9161f3a8448800bb7ad5e2c}
+
+
+Return the closest point on the mesh within the specified maximum search distance. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em query\+Point} & Coordinate from which we want to find the closest point. \\
+\hline
+\mbox{\tt in}  & {\em max\+Dist} & Maximum search distance.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Coordinate of the closest point on the mesh.
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em std\+::invalid\+\_\+argument} & in the case a face has 3 or more collinear vertices. \\
+\hline
+{\em std\+::invalid\+\_\+argument} & in the case a face is not a triangle or quadrilateral. \\
+\hline
+\end{DoxyExceptions}
+
+
+Definition at line 315 of file Closest\+Point\+Query.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/vincent/dev/cpom/include/Closest\+Point\+Query.\+h\item 
+/home/vincent/dev/cpom/src/Closest\+Point\+Query.\+cpp\end{DoxyCompactItemize}

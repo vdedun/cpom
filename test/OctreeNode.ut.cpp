@@ -1,5 +1,5 @@
-#include "../src/OctreeNode.h"
-#include "catch.hpp"
+#include <../src/OctreeNode.h>
+#include <catch.hpp>
 
 #include <limits>
 
@@ -51,7 +51,7 @@ SCENARIO( "Basic octree", "[Octree]" )
             AND_WHEN ( "Visiting the children of the root node" )
             {
                 bool visitedNode = false;
-                rootNode.accept([&](Node &node) { visitedNode = true; } );
+                rootNode.accept([&](const Node &node) { visitedNode = true; } );
                 THEN( "No node is visited" )
                 {
                     REQUIRE(!visitedNode);
@@ -60,14 +60,14 @@ SCENARIO( "Basic octree", "[Octree]" )
             AND_WHEN( "Visiting the elements of the root node" )
             {
                 bool visitedPoint = false;
-                std::function<void(Point &)> visitElement = [&](Point &nodePoint)
+                const auto visitElement = [&](const Point &nodePoint)
                 {
                     if (point.equalsTo(nodePoint))
                     {
                         visitedPoint = true;
                     }
                 };
-                rootNode.accept(visitElement);
+                const_cast<const Node &>(rootNode).accept(visitElement);
                 THEN( "The point is visited" )
                 {
                     REQUIRE(visitedPoint);
@@ -105,13 +105,13 @@ SCENARIO( "Basic octree", "[Octree]" )
                 int maxVisitedDepth = 0;
                 int maxVisitedFill = 0;
 
-                std::function<void(Node &, int)> visitNode =
-                    [&](Node &node, int depth)
+                std::function<void(const Node &, int)> visitNode =
+                    [&](const Node &node, int depth)
                     {
                         if (node.isLeaf())
                         {
                             int nodeFill = 0;
-                            node.accept([&](Point &nodePoint)
+                            node.accept([&](const Point &nodePoint)
                                 {
                                     nodeFill++;
                                     if (point.equalsTo(nodePoint))
@@ -124,10 +124,10 @@ SCENARIO( "Basic octree", "[Octree]" )
                         }
                         else
                         {
-                            node.accept([&visitNode, depth](Node &node)
-                                {
-                                    visitNode(node, depth+1);
-                                });
+                            node.accept([&visitNode, depth](const Node &node)
+                            {
+                                visitNode(node, depth+1);
+                            });
                         }
                     };
 
@@ -179,7 +179,7 @@ SCENARIO( "Basic octree", "[Octree]" )
             {
                 int visitedChildren = 0;
                 int visitedLeaves = 0;
-                rootNode.accept([&](Node& child)
+                rootNode.accept([&](const Node &child)
                     {
                         ++visitedChildren;
                         if (child.isLeaf())

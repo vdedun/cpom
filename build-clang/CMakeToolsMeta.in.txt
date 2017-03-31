@@ -1,0 +1,3 @@
+library;cpom;$<TARGET_FILE:cpom>
+system;Linux;x86_64;Clang
+executable;cpom_ut;$<TARGET_FILE:cpom_ut>

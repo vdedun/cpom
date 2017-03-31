@@ -1,11 +1,12 @@
 #ifndef __OCTREENODE_H__
 #define __OCTREENODE_H__
 
-#include "Float3.h"
+#include <Float3.h>
 
 #include <algorithm>
 #include <cassert>
 #include <functional>
+#include <memory>
 #include <vector>
 
 namespace cpom
@@ -36,9 +37,6 @@ public:
     /// Construct an OctreeNode with supplied Axis Aligned Bouding Cube.
     inline OctreeNode(const AABCube &bounds);
 
-    /// Destructor
-    inline ~OctreeNode();
-
     using Intersect = std::function<bool(const AABCube &, T&)>;
 
     /// \brief Insert an element in the tree.
@@ -50,16 +48,17 @@ public:
     /// \param[in] maxFill The maximal number of elements in a node is
     /// maxFill * depth, unless maxDepth is reached.
     ///
-    void insert(T &element,
+    template<typename _T>
+    void insert(_T &&element,
                 Intersect intersect,
                 int maxDepth=10,
                 float maxFill=3.0);
 
     /// Accept and call a visitor function on all existing children nodes.
-    inline void accept(std::function<void(OctreeNode &)> visitChildren);
+    inline void accept(std::function<void(const OctreeNode &)> visitChildren) const;
 
     /// Accept and call a visitor function on all elements of this node.
-    inline void accept(std::function<void(T &)> visitElement);
+    inline void accept(std::function<void(const T &)> visitElement) const;
 
     /// Return a reference to the Axis Aligned Bounding Cube of the tree.
     inline const AABCube &getBounds() const;
@@ -70,10 +69,11 @@ public:
 private:
     inline AABCube getChildBounds(int) const;
 
-    void walkInsert(T &, Intersect, int, int, float);
+    template<typename _T>
+    void walkInsert(_T &&, Intersect, int, int, float);
 
 	std::vector<T> m_elements;
-    OctreeNode *m_children[8];
+    std::unique_ptr<OctreeNode> m_children[8];
     AABCube m_bounds;
     bool m_isLeaf;
 };
@@ -90,15 +90,6 @@ OctreeNode<T>::OctreeNode(const AABCube &bounds)
 { }
 
 template<class T>
-OctreeNode<T>::~OctreeNode()
-{
-    for (auto child: m_children)
-    {
-        if (child) delete child;
-    }
-}
-
-template<class T>
 bool OctreeNode<T>::isLeaf() const
 {
     return m_isLeaf;
@@ -110,28 +101,30 @@ const AABCube &OctreeNode<T>::getBounds() const
     return m_bounds;
 }
 
+
 template<class T>
-void OctreeNode<T>::accept(std::function<void(OctreeNode &)> visitChild)
+void OctreeNode<T>::accept(std::function<void(const OctreeNode &)> visitChild) const
 {
-    for (auto child: m_children)
+    for (auto &child: m_children)
     {
         if (child) visitChild(*child);
     }
 }
 
 template<class T>
-void OctreeNode<T>::accept(std::function<void(T &)> visitElement)
+void OctreeNode<T>::accept(std::function<void(const T &)> visitElement) const
 {
     std::for_each(m_elements.begin(), m_elements.end(), visitElement);
 }
 
 template<class T>
-void OctreeNode<T>::insert(T &element,    
+template<class _T>
+void OctreeNode<T>::insert(_T &&element,    
                            Intersect intersect,
                            int maxDepth,
                            float maxFill)
 {
-    return walkInsert(element, intersect, 0, maxDepth, maxFill);
+    return walkInsert(std::forward<_T>(element), intersect, 0, maxDepth, maxFill);
 }
 
 /// Returns the Axis Aligned Bounding Cube of a child node.
@@ -158,7 +151,8 @@ AABCube OctreeNode<T>::getChildBounds(int index) const
 
 /// Recursive walk through the tree for insertion purpose.
 template<class T>
-void OctreeNode<T>::walkInsert(T &element,
+template<typename _T>
+void OctreeNode<T>::walkInsert(_T &&element,
                                Intersect intersect,
                                int depth,
                                int maxDepth,
@@ -177,15 +171,15 @@ void OctreeNode<T>::walkInsert(T &element,
             // .. and push elements to children.
             while (!m_elements.empty())
             {
-                walkInsert(m_elements.back(), intersect, depth, maxDepth, maxFill);
+                walkInsert(std::move(m_elements.back()), intersect, depth, maxDepth, maxFill);
                 m_elements.pop_back();
             }
-            walkInsert(element, intersect, depth, maxDepth, maxFill);
+            walkInsert(std::forward<T>(element), intersect, depth, maxDepth, maxFill);
     	}
         else
         {
             // No, populate this leaf and return.
-            m_elements.push_back(element);
+            m_elements.push_back(std::forward<T>(element));
         }
         return;
     }
@@ -200,11 +194,11 @@ void OctreeNode<T>::walkInsert(T &element,
             // Create child if needed.
             if (!child)
             {
-                child = new OctreeNode(childBounds);
+                child = std::unique_ptr<OctreeNode>( new OctreeNode(childBounds) );
                 assert(child);
             }
             // Walk down the tree under this child.
-            child->walkInsert(element, intersect, depth+1, maxDepth, maxFill);
+            child->walkInsert(std::forward<T>(element), intersect, depth+1, maxDepth, maxFill);
         }
         ++childIndex;
     }

@@ -1,0 +1,21 @@
+Start testing: Mar 23 19:10 GMT
+----------------------------------------------------------
+1/1 Testing: cpom_test
+1/1 Test: cpom_test
+Command: "/home/vincent/dev/cpom/build/cpom_ut"
+Directory: /home/vincent/dev/cpom/build
+"cpom_test" start time: Mar 23 19:10 GMT
+Output:
+----------------------------------------------------------
+===============================================================================
+All tests passed (29 assertions in 6 test cases)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"cpom_test" end time: Mar 23 19:10 GMT
+"cpom_test" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Mar 23 19:10 GMT

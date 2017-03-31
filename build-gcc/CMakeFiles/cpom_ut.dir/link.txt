@@ -1,0 +1,1 @@
+/usr/bin/c++    -Wall -pedantic -O3 -DNDEBUG -O3   CMakeFiles/cpom_ut.dir/test/ClosestPointQuery.ut.cpp.o CMakeFiles/cpom_ut.dir/test/OctreeNode.ut.cpp.o CMakeFiles/cpom_ut.dir/test/TestDriver.cpp.o  -o cpom_ut -rdynamic libcpom.a 

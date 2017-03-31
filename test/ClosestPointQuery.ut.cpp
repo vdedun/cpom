@@ -533,7 +533,7 @@ public:
         {
             for (int x = 0; x <= R; ++x)
             {
-                constexpr static float stepSize = 1.0f / (float) R;
+                constexpr float stepSize = 1.0f / (float) R;
                 const Point vertex(Point(x, y, y) * stepSize);
                 vertices[vertexIndex(x, y)] = vertex;
             }

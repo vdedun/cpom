@@ -1,0 +1,41 @@
+\hypertarget{structcpom_1_1_closest_point_query_1_1_impl}{}\section{cpom\+:\+:Closest\+Point\+Query\+:\+:Impl Struct Reference}
+\label{structcpom_1_1_closest_point_query_1_1_impl}\index{cpom\+::\+Closest\+Point\+Query\+::\+Impl@{cpom\+::\+Closest\+Point\+Query\+::\+Impl}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Impl} (const \hyperlink{classcpom_1_1_mesh}{Mesh} \&m)\hypertarget{structcpom_1_1_closest_point_query_1_1_impl_a7727f506992c4316c7f5312d9900995a}{}\label{structcpom_1_1_closest_point_query_1_1_impl_a7727f506992c4316c7f5312d9900995a}
+
+\item 
+void \hyperlink{structcpom_1_1_closest_point_query_1_1_impl_a9cf9e53cd705a095109f038eb8942a42}{partition\+Space} ()\hypertarget{structcpom_1_1_closest_point_query_1_1_impl_a9cf9e53cd705a095109f038eb8942a42}{}\label{structcpom_1_1_closest_point_query_1_1_impl_a9cf9e53cd705a095109f038eb8942a42}
+
+\begin{DoxyCompactList}\small\item\em Partition space and sort faces into partitions. \end{DoxyCompactList}\item 
+\hyperlink{structcpom_1_1_float3}{Point} \hyperlink{structcpom_1_1_closest_point_query_1_1_impl_ad4c32848ce82b2b963c0e0b12049da59}{process\+Partitioned\+Space} (const \hyperlink{structcpom_1_1_float3}{Point} \&, float) const \hypertarget{structcpom_1_1_closest_point_query_1_1_impl_ad4c32848ce82b2b963c0e0b12049da59}{}\label{structcpom_1_1_closest_point_query_1_1_impl_ad4c32848ce82b2b963c0e0b12049da59}
+
+\begin{DoxyCompactList}\small\item\em Walk partitioned space and return the closest point on face. \end{DoxyCompactList}\item 
+\hyperlink{structcpom_1_1_float3}{Point} \hyperlink{structcpom_1_1_closest_point_query_1_1_impl_a91bc5660bc4efe0013a65903888e21ff}{process\+Mesh} (const \hyperlink{structcpom_1_1_float3}{Point} \&, float) const \hypertarget{structcpom_1_1_closest_point_query_1_1_impl_a91bc5660bc4efe0013a65903888e21ff}{}\label{structcpom_1_1_closest_point_query_1_1_impl_a91bc5660bc4efe0013a65903888e21ff}
+
+\begin{DoxyCompactList}\small\item\em Iterator through all faces and find closest point on face. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ \hyperlink{structcpom_1_1_float3}{Point} $>$ {\bfseries m\+\_\+vertices}\hypertarget{structcpom_1_1_closest_point_query_1_1_impl_a10e2d648acd7229003837b74cddee713}{}\label{structcpom_1_1_closest_point_query_1_1_impl_a10e2d648acd7229003837b74cddee713}
+
+\item 
+std\+::vector$<$ \hyperlink{structcpom_1_1_face}{Face} $>$ {\bfseries m\+\_\+faces}\hypertarget{structcpom_1_1_closest_point_query_1_1_impl_ac37d1012841b1e96978fdca87f113a87}{}\label{structcpom_1_1_closest_point_query_1_1_impl_ac37d1012841b1e96978fdca87f113a87}
+
+\item 
+std\+::unique\+\_\+ptr$<$ Node $>$ {\bfseries m\+\_\+partitioned\+Space}\hypertarget{structcpom_1_1_closest_point_query_1_1_impl_adc58145aa33cd69a857257294044f7da}{}\label{structcpom_1_1_closest_point_query_1_1_impl_adc58145aa33cd69a857257294044f7da}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 297 of file Closest\+Point\+Query.\+cpp.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/vincent/dev/cpom/src/Closest\+Point\+Query.\+cpp\end{DoxyCompactItemize}

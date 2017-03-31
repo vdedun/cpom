@@ -1,10 +1,11 @@
-#include "ClosestPointQuery.h"
+#include <ClosestPointQuery.h>
 
-#include "Float3.h"
-#include "OctreeNode.h"
+#include <Float3.h>
+#include <OctreeNode.h>
 
 #include <cassert>
 #include <limits>
+#include <memory>
 #include <numeric>
 #include <queue>
 #include <stdexcept>
@@ -37,8 +38,8 @@ using Node = OctreeNode<OctreeElement>;
 inline bool intersect(const AABCube &cube, const OctreeElement &element)
 {
     const AABBox &box = element.second;
-    const auto distances( (cube.center-box.center).abs() );
-    const auto halfWidthSum(Point(cube.halfWidth) + box.halfWidth);
+    const auto distances = (cube.center-box.center).abs();
+    const auto halfWidthSum = Point(cube.halfWidth) + box.halfWidth;
     return (distances.x <= halfWidthSum.x &&
             distances.y <= halfWidthSum.y &&
             distances.z <= halfWidthSum.z);
@@ -214,7 +215,7 @@ ClosestPointSpec computeClosestPointOnTriangle(const Point &vertex0,
             t2 = 1.0f - s2;
         }
     }
-    const Point closestPoint(vertex0 + edge0*s2 + edge1*t2);
+    const Point closestPoint = vertex0 + edge0*s2 + edge1*t2;
     const float sqrDistance = (fromPoint - closestPoint).sqrLength();
     return ClosestPointSpec(closestPoint, sqrDistance);
 }
@@ -293,41 +294,50 @@ inline float computeSqrDistanceToBounds(const Point &queryPoint,
 
 } // anonymous namespace
 
+struct ClosestPointQuery::Impl
+{
+    std::vector<Point> m_vertices;
+    std::vector<Face> m_faces;
+    std::unique_ptr<Node> m_partitionedSpace;
+
+    Impl(const Mesh &m);
+    void partitionSpace();
+    Point processPartitionedSpace(const Point&, float) const;
+    Point processMesh(const Point&, float) const;
+};
+
 ClosestPointQuery::ClosestPointQuery(const Mesh &m)
-: m_partitionedSpace(nullptr)
-{    
+: m_impl(new ClosestPointQuery::Impl(m) )
+{ }
+
+ClosestPointQuery::~ClosestPointQuery() = default;
+
+Point ClosestPointQuery::operator() (const Point& queryPoint, float maxDist) const
+{
+    if (m_impl->m_partitionedSpace)
+        return m_impl->processPartitionedSpace(queryPoint, maxDist*maxDist);
+    return m_impl->processMesh(queryPoint, maxDist*maxDist);
+}
+
+ClosestPointQuery::Impl::Impl(const Mesh &m)
+{
     m.getVertices(m_vertices);
     m.getFaces(m_faces);
-
     if (m_vertices.empty())
     {
         throw std::invalid_argument("Empty mesh");
     }
 
-    static const int minSpacePartitioningFaces = 32;
+    constexpr int minSpacePartitioningFaces = 32;
     if (m_faces.size() >= minSpacePartitioningFaces)
     {
         partitionSpace();
     }
 }
 
-ClosestPointQuery::~ClosestPointQuery()
-{
-    Node *rootNode = static_cast<Node *>(m_partitionedSpace);
-    if (rootNode)
-        delete rootNode;
-}
-
-Point ClosestPointQuery::operator() (const Point& queryPoint, float maxDist) const
-{
-    if (m_partitionedSpace)
-        return processPartitionedSpace(queryPoint, maxDist*maxDist);
-    return processMesh(queryPoint, maxDist*maxDist);
-}
-
 /// Iterator through all faces and find closest point on face.
-inline Point ClosestPointQuery::processMesh(const Point& queryPoint,
-                                            const float sqrMaxDist) const
+inline Point ClosestPointQuery::Impl::processMesh(const Point& queryPoint,
+                                                  const float sqrMaxDist) const
 {
     const auto &vertices = m_vertices;
     const auto reduceClosestPointOnFace = [&](const ClosestPointSpec &inputClosest,
@@ -346,7 +356,7 @@ inline Point ClosestPointQuery::processMesh(const Point& queryPoint,
 }
 
 /// Partition space and sort faces into partitions.
-void ClosestPointQuery::partitionSpace()
+void ClosestPointQuery::Impl::partitionSpace()
 {
     // Compute the extent of the space taken by all vertices.
     Extent meshExtent = std::accumulate(m_vertices.begin(),
@@ -355,13 +365,12 @@ void ClosestPointQuery::partitionSpace()
                                         growExtent);
 
     // Construct the root octree node bounding the mesh.
-    Node *rootNode = new Node( computeCubicBounds(meshExtent) );
-    m_partitionedSpace = static_cast<void *>(rootNode);
-    assert(rootNode);
+    m_partitionedSpace = std::unique_ptr<Node>(new Node( computeCubicBounds(meshExtent) ));
+    auto& rootNode = *m_partitionedSpace;
 
     // Function that inserts a face into the octree.
     const auto &vertices = m_vertices;
-    const auto insertFace = [&vertices, rootNode](const Face &face)
+    const auto insertFace = [&vertices, &rootNode](const Face &face)
     {
         const auto growFaceExtent = [&vertices](const Extent &extent,
                                                 const int vertexId)
@@ -374,22 +383,22 @@ void ClosestPointQuery::partitionSpace()
                                             Extent(Point(infinity), Point(-infinity)),
                                             growFaceExtent);
         // Insert this face into the octree.
-        OctreeElement element( &face, computeBounds(faceExtent) );
-        rootNode->insert(element, intersect);
+        rootNode.insert(OctreeElement(&face, computeBounds(faceExtent)),
+                        intersect);
     };
     // Insert all faces into the octree.
     std::for_each(m_faces.begin(), m_faces.end(), insertFace);
 }
 
 /// Walk partitioned space and return the closest point on face.
-inline Point ClosestPointQuery::processPartitionedSpace(const Point& queryPoint,
-                                                        const float sqrMaxDist) const
+inline Point ClosestPointQuery::Impl::processPartitionedSpace(const Point& queryPoint,
+                                                              const float sqrMaxDist) const
 {
     // Initialize the result.
     auto result = ClosestPointSpec(Point(nan), infinity);
 
     // Initialize a heap whose top is the node closest to queryPoint.
-    using HeapEntry = std::pair<Node *, float>;
+    using HeapEntry = std::pair<std::reference_wrapper<const Node>, float>;
     const auto heapCompare = [&queryPoint](const HeapEntry &a, const HeapEntry &b)
     {
         return (a.second > b.second);
@@ -404,7 +413,7 @@ inline Point ClosestPointQuery::processPartitionedSpace(const Point& queryPoint,
     // Prepare octree visitor functions.
     const auto &vertices = m_vertices;
     // When visiting an element (face)..
-    const auto visitElement = [&](OctreeElement &element)
+    const auto visitElement = [&](const OctreeElement &element)
     {
         // .. compute the closest point to it and update the global result,
         // respecting sqrMaxDist.
@@ -416,7 +425,7 @@ inline Point ClosestPointQuery::processPartitionedSpace(const Point& queryPoint,
     };
 
     // When visiting an octree child..
-    const auto visitChild = [&queryPoint, &heap, &result](Node &child)
+    const auto visitChild = [&queryPoint, &heap, &result](Node const &child)
     {
         // ..if the child is closer than the closest point currently found..
         const float nodeSqrDist = computeSqrDistanceToBounds( queryPoint,
@@ -424,34 +433,33 @@ inline Point ClosestPointQuery::processPartitionedSpace(const Point& queryPoint,
         if (nodeSqrDist < result.second)
         {
             //.. then add it to the heap.
-            heap.push( HeapEntry(&child, nodeSqrDist) );
+            heap.push( HeapEntry(child, nodeSqrDist) );
         }
     };
 
     // Initialize the heap with the octree root.
-    Node *rootNode = static_cast<Node *>(m_partitionedSpace);
-    assert(rootNode);
+    const auto &rootNode = *m_partitionedSpace;
     const float rootSqrDist = computeSqrDistanceToBounds( queryPoint,
-                                                          rootNode->getBounds() );
-    heap.push( HeapEntry(rootNode, rootSqrDist) );
+                                                          rootNode.getBounds() );
+    heap.push( HeapEntry(std::cref(rootNode), rootSqrDist) );
 
-    // While the heap has nodes and the top one is closer than the current result,
+    // Do a Best First Search over the octree:
+    // while the heap has nodes and the top one is closer than the current result,
     while (!heap.empty() && heap.top().second < result.second)
     {
         // Eat the top of the heap.
-        Node *node = heap.top().first;
+        const Node &node = heap.top().first.get();
         heap.pop();
 
-        assert(node);
-        if (node->isLeaf())
+        if (node.isLeaf())
         {
             // If it's a leaf, visit the elements (faces).
-            node->accept(visitElement);
+            node.accept(visitElement);
         }
         else
         {
             // Otherwise, visit the children nodes.
-            node->accept(visitChild);
+            node.accept(visitChild);
         }
     }
 

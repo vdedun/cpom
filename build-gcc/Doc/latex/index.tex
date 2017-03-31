@@ -1,0 +1,250 @@
+\hypertarget{index_intro_sec}{}\section{Introduction}\label{index_intro_sec}
+C\+P\+OM is a C++ library able to compute the closest point on a mesh efficiently for many query positions.\hypertarget{index_requirements_sec}{}\section{Requirements}\label{index_requirements_sec}
+A C++11 compiler is required, as well as C\+Make 3.\+0+.
+
+The following environments have been tested\+:
+\begin{DoxyItemize}
+\item Operating systems\+: O\+SX and Linux
+\item Compilers\+: Clang and G\+CC
+\end{DoxyItemize}\hypertarget{index_install_sec}{}\section{Build}\label{index_install_sec}
+\hypertarget{index_step1}{}\subsection{Step 1\+: Compiling}\label{index_step1}
+\begin{DoxyVerb}$ mkdir build
+$ cd build
+$ cmake ..
+$ make all
+\end{DoxyVerb}
+\hypertarget{index_step2}{}\subsection{Step 2\+: Running unit tests}\label{index_step2}
+\begin{DoxyVerb}$ make test
+
+Running tests...
+Test project /Users/vincentdedun/Documents/enzo/dev/cpom/build
+    Start 1: cpom_test
+1/1 Test #1: cpom_test ........................   Passed   11.97 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =  11.98 sec
+\end{DoxyVerb}
+
+
+To run timed tests (benchmarks) \+: \begin{DoxyVerb}$ ./cpom_ut -d 1 "[.MeshBenchmark]"
+
+0.000 s:     Then: The expected position is returned
+0.876 s:     When: Evaluating one million times the query with a position far from the plane
+0.876 s:    Given: A plane mesh with 4 quad faces and a ClosestPointQuery on it
+0.876 s: Scenario: Dense plane mesh
+0.000 s:     Then: The same position is returned
+5.657 s:     When: Evaluating one million times the query with a position at the centroid of the plane
+7.126 s:    Given: A plane mesh with one million quad faces and a ClosestPointQuery on it
+7.126 s: Scenario: Dense plane mesh
+0.000 s:     Then: The expected position is returned
+2.719 s:     When: Evaluating one thousand times the query with a position far from the plane
+4.042 s:    Given: A plane mesh with one million quad faces and a ClosestPointQuery on it
+4.042 s: Scenario: Dense plane mesh
+===============================================================================
+All tests passed (3 assertions in 1 test case)
+\end{DoxyVerb}
+\hypertarget{index_limitation_sec}{}\section{Limitations}\label{index_limitation_sec}
+Only triangle and quadrilateral faces are supported. General polygons should be triangulated beforehand.\hypertarget{index_example_sec}{}\section{Example}\label{index_example_sec}
+The functor class \hyperlink{classcpom_1_1_closest_point_query}{cpom\+::\+Closest\+Point\+Query} offers the core functionality. Example usage can be found in the unit test \hyperlink{_closest_point_query_8ut_8cpp}{Closest\+Point\+Query.\+ut.\+cpp}, such as\+: 
+\begin{DoxyCodeInclude}
+SCENARIO( \textcolor{stringliteral}{"Single Triangle Mesh"}, \textcolor{stringliteral}{"[Mesh]"} )
+\{
+    \textcolor{keyword}{class }StubSoloTriangleMesh : \textcolor{keyword}{public} Mesh
+    \{
+    \textcolor{keyword}{public}:
+        \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} getVertices(std::vector<Point> &vertices)\textcolor{keyword}{ const}
+\textcolor{keyword}{        }\{
+            \textcolor{keyword}{static} \textcolor{keyword}{const} std::vector<Point> s\_vertices = \{ Point(0.0f, 0.0f, 0.0f),
+                                                           Point(1.0f, 0.0f, 0.0f),
+                                                           Point(0.0f, 1.0f, 0.0f) \};
+
+            vertices.reserve(3);
+            std::copy(s\_vertices.begin(),
+                      s\_vertices.end(),
+                      std::back\_inserter(vertices));
+        \}
+
+        \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} getFaces(std::vector<Face> &faces)\textcolor{keyword}{ const}
+\textcolor{keyword}{        }\{
+            \textcolor{keyword}{static} \textcolor{keyword}{const} Face face = \{ \{ 0, 1, 2 \}  \};
+            \textcolor{keyword}{static} \textcolor{keyword}{const} std::vector<Face> s\_faces = \{ face \};
+
+            faces.reserve(1);
+            std::copy(s\_faces.begin(),
+                      s\_faces.end(),
+                      std::back\_inserter(faces));
+        \}
+    \};
+
+    GIVEN( \textcolor{stringliteral}{"A mesh with a single triangle and a ClosestPointQuery on it"} )
+    \{
+        StubSoloTriangleMesh stubSoloTriangleMesh;
+        \textcolor{keyword}{const} ClosestPointQuery query(stubSoloTriangleMesh);
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with the first vertex as position"} )
+        \{
+            constexpr Point position(0.0f, 0.0f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The same position is returned"} )
+            \{
+                REQUIRE( position.equalsTo(closestPoint) );
+            \}
+            AND\_THEN( \textcolor{stringliteral}{"The returned point has no NaN"} )
+            \{
+                REQUIRE( !closestPoint.hasNan() );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position outside the triangle"} )
+        \{
+            constexpr Point position(-1.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"A different position is returned"} )
+            \{
+                REQUIRE( !position.equalsTo(closestPoint) );
+            \}
+
+            AND\_WHEN( \textcolor{stringliteral}{"Evaluating the query for the returned position"} )
+            \{
+                \textcolor{keyword}{const} Point closestPoint2 = query(closestPoint, infinity);
+                THEN( \textcolor{stringliteral}{"The same position is returned"} )
+                \{
+                    REQUIRE( closestPoint.equalsTo(closestPoint2) );
+                \}
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position in region 0"} )
+        \{
+            constexpr Point position(0.25f, 0.25f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The same position is returned"} )
+            \{
+                REQUIRE( position.equalsTo(closestPoint) );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position in region 1"} )
+        \{
+            constexpr Point position(1.0f, 1.0f, 0.0f);
+            constexpr Point expectedResult(0.5f, 0.5f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The returned point is on the expected edge"} )
+            \{
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position in region 3"} )
+        \{
+            constexpr Point position(-1.0f, 0.5f, 0.0f);
+            constexpr Point expectedResult(0.0f, 0.5f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The returned point is on the expected edge"} )
+            \{
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position in region 5"} )
+        \{
+            constexpr Point position(0.5f, -1.0f, 0.0f);
+            constexpr Point expectedResult(0.5f, 0.0f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The returned point is on the expected edge"} )
+            \{
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position in region 2"} )
+        \{
+            constexpr Point position(-0.5f, 2.0f, 0.0f);
+            constexpr Point expectedResult(0.0f, 1.0f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The returned point is on the expected vertex"} )
+            \{
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position in region 4"} )
+        \{
+            constexpr Point position(-0.5f, -0.5f, 0.0f);
+            constexpr Point expectedResult(0.0f, 0.0f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The returned point is on the expected vertex"} )
+            \{
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position in region 6"} )
+        \{
+            constexpr Point position(2.0f, -0.5f, 0.0f);
+            constexpr Point expectedResult(1.0f, 0.0f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The returned point is on the expected vertex"} )
+            \{
+                REQUIRE( expectedResult.equalsTo(closestPoint) );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position behind max distance from the triangle"} )
+        \{
+            constexpr Point position(-1000.0f);
+            constexpr \textcolor{keywordtype}{float} maxDistance = 1.0f;
+            \textcolor{keyword}{const} Point closestPoint = query(position, maxDistance);
+
+            THEN( \textcolor{stringliteral}{"The returned point has NaNs"} )
+            \{
+                CAPTURE( closestPoint );
+                REQUIRE( closestPoint.hasNan() );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with the second vertex as position"} )
+        \{
+            constexpr Point position(1.0f, 0.0f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The same position is returned"} )
+            \{
+                REQUIRE( position.equalsTo(closestPoint) );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position on the first edge"} )
+        \{
+            constexpr Point position(0.5f, 0.0f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The same position is returned"} )
+            \{
+                REQUIRE( position.equalsTo(closestPoint) );
+            \}
+        \}
+
+        WHEN( \textcolor{stringliteral}{"Evaluating the query with a position at the centroid"} )
+        \{
+            constexpr Point position(1.0f/3.0f, 1.0f/3.0f, 0.0f);
+            \textcolor{keyword}{const} Point closestPoint = query(position, infinity);
+
+            THEN( \textcolor{stringliteral}{"The same position is returned"} )
+            \{
+                REQUIRE( position.equalsTo(closestPoint) );
+            \}
+        \}
+    \}
+\}
+\end{DoxyCodeInclude}

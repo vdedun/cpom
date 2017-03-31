@@ -1,0 +1,91 @@
+\hypertarget{classcpom_1_1_octree_node}{}\section{cpom\+:\+:Octree\+Node$<$ T $>$ Class Template Reference}
+\label{classcpom_1_1_octree_node}\index{cpom\+::\+Octree\+Node$<$ T $>$@{cpom\+::\+Octree\+Node$<$ T $>$}}
+
+
+Class defining an octree node that holds data of type T.  
+
+
+
+
+{\ttfamily \#include $<$Octree\+Node.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using {\bfseries Intersect} = std\+::function$<$ bool(const \hyperlink{structcpom_1_1_a_a_b_cube}{A\+A\+B\+Cube} \&, T \&)$>$\hypertarget{classcpom_1_1_octree_node_ae7be22165931dd27e9c93517c4466b61}{}\label{classcpom_1_1_octree_node_ae7be22165931dd27e9c93517c4466b61}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcpom_1_1_octree_node_af735078c73281cbb5132d61e8f2710bb}{Octree\+Node} (const \hyperlink{structcpom_1_1_a_a_b_cube}{A\+A\+B\+Cube} \&bounds)\hypertarget{classcpom_1_1_octree_node_af735078c73281cbb5132d61e8f2710bb}{}\label{classcpom_1_1_octree_node_af735078c73281cbb5132d61e8f2710bb}
+
+\begin{DoxyCompactList}\small\item\em Construct an \hyperlink{classcpom_1_1_octree_node}{Octree\+Node} with supplied Axis Aligned Bouding Cube. \end{DoxyCompactList}\item 
+\hyperlink{classcpom_1_1_octree_node_a73b4793b1683d595b2e1d1f2cc994158}{$\sim$\+Octree\+Node} ()\hypertarget{classcpom_1_1_octree_node_a73b4793b1683d595b2e1d1f2cc994158}{}\label{classcpom_1_1_octree_node_a73b4793b1683d595b2e1d1f2cc994158}
+
+\begin{DoxyCompactList}\small\item\em Destructor. \end{DoxyCompactList}\item 
+void \hyperlink{classcpom_1_1_octree_node_a5415b8c887c68a3c86a716748d237581}{insert} (T \&element, Intersect intersect, int max\+Depth=10, float max\+Fill=3.\+0)
+\begin{DoxyCompactList}\small\item\em Insert an element in the tree. \end{DoxyCompactList}\item 
+void \hyperlink{classcpom_1_1_octree_node_aa28ddf7a2321e87145bfb7b5b3d4b0a7}{accept} (std\+::function$<$ void(\hyperlink{classcpom_1_1_octree_node}{Octree\+Node} \&)$>$ visit\+Children)\hypertarget{classcpom_1_1_octree_node_aa28ddf7a2321e87145bfb7b5b3d4b0a7}{}\label{classcpom_1_1_octree_node_aa28ddf7a2321e87145bfb7b5b3d4b0a7}
+
+\begin{DoxyCompactList}\small\item\em Accept and call a visitor function on all existing children nodes. \end{DoxyCompactList}\item 
+void \hyperlink{classcpom_1_1_octree_node_af24db9a094954686045ad453af5ef254}{accept} (std\+::function$<$ void(T \&)$>$ visit\+Element)\hypertarget{classcpom_1_1_octree_node_af24db9a094954686045ad453af5ef254}{}\label{classcpom_1_1_octree_node_af24db9a094954686045ad453af5ef254}
+
+\begin{DoxyCompactList}\small\item\em Accept and call a visitor function on all elements of this node. \end{DoxyCompactList}\item 
+const \hyperlink{structcpom_1_1_a_a_b_cube}{A\+A\+B\+Cube} \& \hyperlink{classcpom_1_1_octree_node_a9a79ab665626c3c2a6f97aeabe3ff850}{get\+Bounds} () const \hypertarget{classcpom_1_1_octree_node_a9a79ab665626c3c2a6f97aeabe3ff850}{}\label{classcpom_1_1_octree_node_a9a79ab665626c3c2a6f97aeabe3ff850}
+
+\begin{DoxyCompactList}\small\item\em Return a reference to the Axis Aligned Bounding Cube of the tree. \end{DoxyCompactList}\item 
+bool \hyperlink{classcpom_1_1_octree_node_a653c782edb053eb55d91265ad156008e}{is\+Leaf} () const \hypertarget{classcpom_1_1_octree_node_a653c782edb053eb55d91265ad156008e}{}\label{classcpom_1_1_octree_node_a653c782edb053eb55d91265ad156008e}
+
+\begin{DoxyCompactList}\small\item\em Return true if this node is a leaf. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\\*
+class cpom\+::\+Octree\+Node$<$ T $>$}
+
+Class defining an octree node that holds data of type T. 
+
+An octree is modeled by a tree of \hyperlink{classcpom_1_1_octree_node}{Octree\+Node}. Leaves contain a number of elements of type T. The octree can be traversed through visitor functions.
+
+Example usage can be found in the unit test \hyperlink{_octree_node_8ut_8cpp}{Octree\+Node.\+ut.\+cpp}. 
+
+Definition at line 33 of file Octree\+Node.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\index{cpom\+::\+Octree\+Node@{cpom\+::\+Octree\+Node}!insert@{insert}}
+\index{insert@{insert}!cpom\+::\+Octree\+Node@{cpom\+::\+Octree\+Node}}
+\subsubsection[{\texorpdfstring{insert(\+T \&element, Intersect intersect, int max\+Depth=10, float max\+Fill=3.\+0)}{insert(T &element, Intersect intersect, int maxDepth=10, float maxFill=3.0)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class T $>$ void {\bf cpom\+::\+Octree\+Node}$<$ T $>$\+::insert (
+\begin{DoxyParamCaption}
+\item[{T \&}]{element, }
+\item[{Intersect}]{intersect, }
+\item[{int}]{max\+Depth = {\ttfamily 10}, }
+\item[{float}]{max\+Fill = {\ttfamily 3.0}}
+\end{DoxyParamCaption}
+)}\hypertarget{classcpom_1_1_octree_node_a5415b8c887c68a3c86a716748d237581}{}\label{classcpom_1_1_octree_node_a5415b8c887c68a3c86a716748d237581}
+
+
+Insert an element in the tree. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\tt in}  & {\em element} & Element to be inserted in the tree. \\
+\hline
+\mbox{\tt in}  & {\em intersect} & Function to test intersection between an element and a node bounds. \\
+\hline
+\mbox{\tt in}  & {\em max\+Depth} & Maximal depth to grow the tree under this node. \\
+\hline
+\mbox{\tt in}  & {\em max\+Fill} & The maximal number of elements in a node is max\+Fill $\ast$ depth, unless max\+Depth is reached. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 129 of file Octree\+Node.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/vincent/dev/cpom/src/Octree\+Node.\+h\end{DoxyCompactItemize}
